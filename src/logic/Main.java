@@ -1,5 +1,6 @@
 package logic;
 
+import java.io.*;
 import java.time.LocalDate;
 import java.util.Arrays;
 
@@ -30,6 +31,56 @@ public class Main {
             System.out.println(Arrays.asList(studentsByFaculty(students, faculty)));
         }
         System.out.println("---------");
+        writeStudentsToTextFile(students);
+    }
+
+    private Student[] readStudentsFromTextFile(String fileName) {
+        Student[] result = null;
+        try {
+            BufferedReader in = new BufferedReader(new FileReader(fileName));
+            int count = Integer.parseInt(in.readLine());
+            result = new Student[count];
+            for (int i = 0; i < result.length; i++) {
+                int id = Integer.parseInt(in.readLine());
+                String firstName = in.readLine();
+                String secondName = in.readLine();
+                String lastName = in.readLine();
+                LocalDate birthday = LocalDate.parse(in.readLine());
+                String address = in.readLine();
+                String phone = in.readLine();
+                String faculty = in.readLine();
+                int year = Integer.parseInt(in.readLine());
+                String group = in.readLine();
+                result[i] = new Student(id, firstName, secondName, lastName, birthday, address, phone, faculty, year, group);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    private void writeStudentsToTextFile(Student[] students) {
+        try {
+            PrintWriter out = new PrintWriter("students.txt");
+            out.println(students.length);
+            for (Student student : students) {
+                out.println(student.getId());
+                out.println(student.getFirstName());
+                out.println(student.getSecondName());
+                out.println(student.getLastName());
+                out.println(student.getBirthday());
+                out.println(student.getAddress());
+                out.println(student.getPhone());
+                out.println(student.getFaculty());
+                out.println(student.getYear());
+                out.println(student.getGroup());
+            }
+            out.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     public Student[] studentsByFaculty(Student[] students, String faculty) {
