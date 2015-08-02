@@ -1,11 +1,12 @@
 package logic;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 /**
  * Created by Eugeny on 19.07.2015.
  */
-public class Student {
+public class Student implements Serializable, Comparable<Student> {
     private int id;
     private String firstName;
     private String secondName;
@@ -166,5 +167,12 @@ public class Student {
         result = 31 * result + year;
         result = 31 * result + (group != null ? group.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public int compareTo(Student o) {
+        int val = this.lastName.compareTo(o.lastName);
+        if (val!=0) return val;
+        return Integer.compare(this.id, o.id);
     }
 }
